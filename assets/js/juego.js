@@ -38,8 +38,21 @@ const pedirCarta = () => {
     if( deck.length === 0 ){
         throw 'No hay cartas en el deck';
     }
-    let cartaSeleccionada = deck.pop();
+    const cartaSeleccionada = deck.pop();
     return cartaSeleccionada;
 }
 
 pedirCarta();
+
+// pedir carta
+const valorCarta = ( carta ) => {
+
+    //los string se pueden trabajar como arreglos
+    //con substring regresa un string cortado en base a la posicion inicial y una posicion final
+    const valor = carta.substring(0, carta.length-1);
+    // //isNaN evalua si el valor es un numero o no, devuelve verdadero si no es un numero, falso si lo es
+    return (!isNaN(valor)) ? (valor*1): ( valor === 'A') ? 11 : 10;
+
+}
+
+console.log(valorCarta(pedirCarta()));
