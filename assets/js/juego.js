@@ -9,6 +9,7 @@ let deck = [];
 const tiposCartas = ['C', 'D', 'H', 'S'];
 const cartasEspeciales = ['A', 'J', 'Q', 'K']
 
+//Esta funcion anonima deck crea una nueva baraja revuelta
 const crearDeck = () =>{
     //Añade las cartas del 2 al 10 con su tipo de carta
     for(let i = 2; i <= 10; i++){
@@ -22,10 +23,23 @@ const crearDeck = () =>{
             deck.push(cartaEspecial + tipo);
         }
     }
-    console.log(deck);
+    // console.log(deck);
     //con la funcion _.shuffle crea un nuevo array almacenando los mismos valores en posiciones aleatoreas
     deck = _.shuffle(deck);
     console.log(deck)
+    return deck;
 }
 
 crearDeck();
+
+// Esta función me permite tomar una carta
+const pedirCarta = () => {
+
+    if( deck.length === 0 ){
+        throw 'No hay cartas en el deck';
+    }
+    let cartaSeleccionada = deck.pop();
+    return cartaSeleccionada;
+}
+
+pedirCarta();
