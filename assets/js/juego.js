@@ -7,7 +7,15 @@
 
 let deck = [];
 const tiposCartas = ['C', 'D', 'H', 'S'];
-const cartasEspeciales = ['A', 'J', 'Q', 'K']
+const cartasEspeciales = ['A', 'J', 'Q', 'K'];
+let puntosJugador = 0, puntosComputadora = 0;
+
+
+//Referencias del HTML
+const btn_pedir_carta = document.querySelector('#btn_pedir_carta');
+const jugador_cartas_div = document.querySelector('#jugador-cartas');
+const pc_cartas_div = document.querySelector('#computadora-cartas');
+const smalls_puntajes = document.querySelectorAll('small');
 
 //Esta funcion anonima deck crea una nueva baraja revuelta
 const crearDeck = () =>{
@@ -23,10 +31,8 @@ const crearDeck = () =>{
             deck.push(cartaEspecial + tipo);
         }
     }
-    // console.log(deck);
     //con la funcion _.shuffle crea un nuevo array almacenando los mismos valores en posiciones aleatoreas
     deck = _.shuffle(deck);
-    console.log(deck)
     return deck;
 }
 
@@ -55,4 +61,31 @@ const valorCarta = ( carta ) => {
 
 }
 
-console.log(valorCarta(pedirCarta()));
+//Eventos
+//para escuchar un evento usamos la siguiente sintaxis
+//addEventListener() tiene dos argumentos, el primero es el evento que queremos estar escuchando
+//el segundo parametro es un evento especial, dicha funcion que se le coloca como argumeto a otra
+//funcion es conocida como un callback, es decir es una funcion que se está mandando como argumento
+//puede ser tanto una funcion tradicional como una de flecha
+//en resument, cuando se haga click en este boton se va a disparar la accion de la funcion del parametro
+//de la funcion del evento
+btn_pedir_carta.addEventListener('click', () => {
+    const carta = pedirCarta();
+    puntosJugador = puntosJugador + valorCarta(carta);
+    smalls_puntajes[0].innerText = puntosJugador;
+
+    const imgCarta = document.createElement('img');
+    imgCarta.src = `assets/cartas/${carta}.png`;
+    imgCarta.classList.add('carta');
+    jugador_cartas_div.append(imgCarta);
+
+    if(puntosJugador > 21){
+        console.warn('Lo siento mucho, perdiste');
+        btn_pedir_carta.disabled = true;
+    } else if(puntosJugador === 21){
+        console.warn('21, genial!');
+        btn_pedir_carta.disabled = true;
+    }
+});
+
+{/* <img class="carta" src="assets/cartas/4H.png" alt="carta-maquina"/> */}
