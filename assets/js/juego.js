@@ -13,6 +13,7 @@ let puntosJugador = 0, puntosComputadora = 0;
 
 //Referencias del HTML
 const btn_pedir_carta = document.querySelector('#btn_pedir_carta');
+const btn_detener = document.querySelector('#btn_detener');
 const jugador_cartas_div = document.querySelector('#jugador-cartas');
 const pc_cartas_div = document.querySelector('#computadora-cartas');
 const smalls_puntajes = document.querySelectorAll('small');
@@ -48,7 +49,6 @@ const pedirCarta = () => {
     return cartaSeleccionada;
 }
 
-pedirCarta();
 
 // pedir carta
 const valorCarta = ( carta ) => {
@@ -58,6 +58,26 @@ const valorCarta = ( carta ) => {
     const valor = carta.substring(0, carta.length-1);
     // //isNaN evalua si el valor es un numero o no, devuelve verdadero si no es un numero, falso si lo es
     return (!isNaN(valor)) ? (valor*1): ( valor === 'A') ? 11 : 10;
+
+}
+
+//turno de la computadora
+const turnoComputadora = (puntosMinimos) => {
+    do{
+        const carta = pedirCarta();
+        puntosComputadora = puntosComputadora + valorCarta(carta);
+        smalls_puntajes[1].innerText = puntosComputadora;
+
+        const imgCarta = document.createElement('img');
+        imgCarta.src = `assets/cartas/${carta}.png`;
+        imgCarta.classList.add('carta');
+        pc_cartas_div.append(imgCarta);
+
+        if( puntosMinimos > 21){
+            break;
+        }
+
+    }while((puntosComputadora < puntosMinimos) && (puntosMinimos <= 21) );
 
 }
 
@@ -82,10 +102,19 @@ btn_pedir_carta.addEventListener('click', () => {
     if(puntosJugador > 21){
         console.warn('Lo siento mucho, perdiste');
         btn_pedir_carta.disabled = true;
+        btn_detener.disabled = true;
+        turnoComputadora(puntosJugador);
     } else if(puntosJugador === 21){
         console.warn('21, genial!');
         btn_pedir_carta.disabled = true;
+        btn_detener.disabled = true;
+        turnoComputadora(puntosJugador);
     }
 });
 
-{/* <img class="carta" src="assets/cartas/4H.png" alt="carta-maquina"/> */}
+btn_detener.addEventListener('click', () =>{
+    btn_pedir_carta.disabled = true;
+    btn_detener.disabled = true;
+    turnoComputadora(puntosJugador);
+});
+
