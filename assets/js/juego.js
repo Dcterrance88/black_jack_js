@@ -14,6 +14,7 @@ let puntosJugador = 0, puntosComputadora = 0;
 //Referencias del HTML
 const btn_pedir_carta = document.querySelector('#btn_pedir_carta');
 const btn_detener = document.querySelector('#btn_detener');
+const btn_nueva_carta = document.querySelector('#btn_nueva_carta');
 const jugador_cartas_div = document.querySelector('#jugador-cartas');
 const pc_cartas_div = document.querySelector('#computadora-cartas');
 const smalls_puntajes = document.querySelectorAll('small');
@@ -76,9 +77,19 @@ const turnoComputadora = (puntosMinimos) => {
         if( puntosMinimos > 21){
             break;
         }
+    }while((puntosComputadora <= puntosMinimos) && (puntosMinimos <= 21) );
 
-    }while((puntosComputadora < puntosMinimos) && (puntosMinimos <= 21) );
-
+    setTimeout(() => {
+        if(puntosComputadora === puntosMinimos){
+            alert('Nadie gana :(');
+        } else if ( puntosMinimos > 21){
+            alert('Computadora gana')
+        } else if ( puntosComputadora > 21){
+            alert('Jugador Gana');
+        } else {
+            alert('Computadora Gana');
+        }
+    }, 500);
 }
 
 //Eventos
@@ -100,12 +111,10 @@ btn_pedir_carta.addEventListener('click', () => {
     jugador_cartas_div.append(imgCarta);
 
     if(puntosJugador > 21){
-        console.warn('Lo siento mucho, perdiste');
         btn_pedir_carta.disabled = true;
         btn_detener.disabled = true;
         turnoComputadora(puntosJugador);
     } else if(puntosJugador === 21){
-        console.warn('21, genial!');
         btn_pedir_carta.disabled = true;
         btn_detener.disabled = true;
         turnoComputadora(puntosJugador);
@@ -118,3 +127,15 @@ btn_detener.addEventListener('click', () =>{
     turnoComputadora(puntosJugador);
 });
 
+btn_nueva_carta.addEventListener('click', () => {
+    console.clear();
+    deck = [];
+    crearDeck();
+    puntosJugador = 0, puntosComputadora = 0;
+    smalls_puntajes[0].innerText = 0;
+    smalls_puntajes[1].innerText = 0;
+    jugador_cartas_div.innerHTML='';
+    pc_cartas_div.innerHTML='';
+    btn_pedir_carta.disabled = false;
+    btn_detener.disabled = false;
+});
